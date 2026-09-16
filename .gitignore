@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.next/
+out/
+*.log
+.env
+.env.local
+*.tsbuildinfo
+public/sw.js
+public/sw.js.map
+public/swe-worker*.js
+.DS_Store

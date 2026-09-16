@@ -1,0 +1,21 @@
+{
+  "name": "@apex/generador-demo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Generador de datos demo de sesion de carrera de iRacing, transmitidos por WebSocket.",
+  "main": "src/main.ts",
+  "scripts": {
+    "test": "vitest run --root ../.. generador-demo",
+    "start": "tsx src/main.ts",
+    "dev": "tsx watch src/main.ts"
+  },
+  "dependencies": {
+    "@apex/contrato-datos": "*",
+    "@apex/telemetry-core": "*",
+    "ws": "8.21.3"
+  },
+  "devDependencies": {
+    "@types/ws": "8.5.12",
+    "tsx": "^4.19.2"
+  }
+}

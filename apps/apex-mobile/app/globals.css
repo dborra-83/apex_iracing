@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-warning: var(--warning);
+  --color-success: var(--success);
+  --font-hud: var(--font-hud);
+}
+
+/*
+ * Tema propio de Apex Mobile (Requisito 11.1-11.3), distinto del tema del
+ * Dashboard: misma familia visual (acentos cian/neón, tipografía
+ * condensada) pero afinado para legibilidad a distancia mientras se
+ * conduce en vez de densidad de información.
+ *
+ * Alternancia claro/oscuro (panel de Ajustes, `useThemeStore`): `:root`
+ * define el tema CLARO (fondo casi blanco, acento cian oscurecido para
+ * mantener contraste legible a distancia sobre fondo claro) y `.dark`
+ * define el tema OSCURO original (fondo casi negro puro, chroma ~0, para
+ * maximizar el contraste con los acentos cian). La clase `dark` en
+ * `<html>` la controla `ThemeProvider` a partir de `useThemeStore`
+ * (persistido), no un media query `prefers-color-scheme`.
+ */
+:root {
+  --background: oklch(0.97 0 0);
+  --foreground: oklch(0.15 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.15 0 0);
+  --primary: oklch(0.5 0.13 195);
+  --primary-foreground: oklch(0.97 0 0);
+  --accent: oklch(0.5 0.13 195);
+  --accent-foreground: oklch(0.97 0 0);
+  --muted: oklch(0.92 0 0);
+  --muted-foreground: oklch(0.4 0 0);
+  --border: oklch(0.5 0.13 195 / 30%);
+  --destructive: oklch(0.55 0.22 25);
+  --warning: oklch(0.65 0.18 80);
+  --success: oklch(0.55 0.16 145);
+}
+
+.dark {
+  --background: oklch(0.12 0 0);
+  --foreground: oklch(0.98 0 0);
+  --card: oklch(0.17 0.01 255);
+  --card-foreground: oklch(0.98 0 0);
+  --primary: oklch(0.75 0.15 195);
+  --primary-foreground: oklch(0.12 0 0);
+  --accent: oklch(0.75 0.15 195);
+  --accent-foreground: oklch(0.12 0 0);
+  --muted: oklch(0.22 0.01 255);
+  --muted-foreground: oklch(0.75 0 0);
+  --border: oklch(0.75 0.15 195 / 25%);
+  --destructive: oklch(0.65 0.22 25);
+  --warning: oklch(0.82 0.16 90);
+  --success: oklch(0.75 0.18 145);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+}
+
+/*
+ * Restricción de viewport fijo (design.md, sección "Apex Mobile"): la
+ * pantalla única no debe hacer scroll ni en portrait ni en landscape, todo
+ * el contenido debe caber en `100dvh`. `overflow: hidden` en html/body
+ * evita que un layout ligeramente desbordado introduzca una barra de
+ * scroll; la composición real de las regiones (velocímetro, marcha,
+ * paneles) se implementa en tareas posteriores (19.x) respetando este
+ * límite.
+ */
+html,
+body {
+  height: 100%;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+/*
+ * Utilidad `.hud-number` (Requisito 11.2, 11.3, 11.4): tipografía
+ * condensada para los valores numéricos críticos de la Pantalla_Principal
+ * (velocidad, marcha, tiempos de vuelta, gaps, combustible).
+ *
+ * A diferencia de la `.hud-number` del Dashboard (pensada para densidad de
+ * información, letras más pequeñas y ajustadas), esta variante prioriza la
+ * legibilidad a distancia: tamaño base más grande (24px mínimo, ver
+ * design.md), peso más alto y `letter-spacing` positivo en vez de negativo
+ * para que los dígitos no se aprieten entre sí al leerse de un vistazo
+ * rápido mientras se conduce. Reutiliza el mismo mecanismo que el Dashboard
+ * (CSS var `--font-hud` cargada vía next/font/google en app/layout.tsx, con
+ * Chakra Petch) para mantener coherencia visual entre ambas apps del
+ * producto.
+ */
+@utility hud-number {
+  font-family: var(--font-hud), ui-monospace, "SF Mono", "Cascadia Code",
+    "Consolas", monospace;
+  font-stretch: condensed;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+  font-style: normal;
+  font-size: max(24px, 1.5rem);
+  line-height: 1.05;
+  color: var(--primary);
+}
+
+/*
+ * Resplandor de texto cian/neón para acompañar `.hud-number` en los
+ * valores más críticos (velocidad, marcha, shift lights - Requisito 11.2 y
+ * 11.4), reforzando el contraste frente al fondo casi negro.
+ */
+@utility hud-text-glow {
+  text-shadow:
+    0 0 10px color-mix(in oklch, currentColor, transparent 35%),
+    0 0 24px color-mix(in oklch, currentColor, transparent 60%);
+}

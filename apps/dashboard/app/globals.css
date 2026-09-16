@@ -1,0 +1,274 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-sans);
+  --font-hud: var(--font-hud);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-warning: var(--warning);
+  --color-success: var(--success);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/*
+ * Tema "motorsport neón" (Requisito 16.1, 16.3 / 17.2), ahora con
+ * alternancia claro/oscuro configurable por el usuario (panel de
+ * Ajustes, ver `SettingsPanel.tsx`/`useThemeStore`): originalmente el
+ * Dashboard usaba un único tema oscuro sin alternancia, y `:root`/`.dark`
+ * repetían exactamente los mismos valores para que aplicar la clase
+ * `dark` fuera un no-op seguro. Ahora `:root` define el tema CLARO
+ * (activo cuando el `<html>` NO tiene la clase `dark`) y `.dark` sigue
+ * definiendo el tema oscuro original sin cambios, conservando la misma
+ * identidad de marca (acentos cian ~hue 195 / magenta ~hue 330) en ambos,
+ * solo invirtiendo la relación fondo/texto y suavizando el chroma de los
+ * acentos en claro (chroma alto sobre fondo blanco resulta chillón/poco
+ * legible, a diferencia de sobre fondo casi negro).
+ *
+ * La clase `dark` en `<html>` la controla `ThemeProvider` (ver
+ * `components/ThemeProvider.tsx`) a partir de `useThemeStore`
+ * (persistido en localStorage), no un media query `prefers-color-scheme`:
+ * el usuario elige explícitamente el tema desde el panel de Ajustes.
+ */
+:root {
+  --background: oklch(0.98 0.005 255);
+  --foreground: oklch(0.18 0.02 255);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.18 0.02 255);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.18 0.02 255);
+  --primary: oklch(0.55 0.15 195);
+  --primary-foreground: oklch(0.98 0.005 255);
+  --secondary: oklch(0.93 0.015 255);
+  --secondary-foreground: oklch(0.18 0.02 255);
+  --muted: oklch(0.94 0.01 255);
+  --muted-foreground: oklch(0.45 0.02 240);
+  --accent: oklch(0.55 0.22 330);
+  --accent-foreground: oklch(0.98 0.005 255);
+  --destructive: oklch(0.55 0.22 25);
+  --border: oklch(0.55 0.15 195 / 25%);
+  --input: oklch(0 0 0 / 10%);
+  --ring: oklch(0.55 0.15 195);
+  --chart-1: oklch(0.55 0.15 195);
+  --chart-2: oklch(0.55 0.22 330);
+  --chart-3: oklch(0.6 0.16 90);
+  --chart-4: oklch(0.55 0.16 145);
+  --chart-5: oklch(0.5 0.18 290);
+  --warning: oklch(0.7 0.18 80);
+  --success: oklch(0.55 0.16 145);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.96 0.008 255);
+  --sidebar-foreground: oklch(0.18 0.02 255);
+  --sidebar-primary: oklch(0.55 0.15 195);
+  --sidebar-primary-foreground: oklch(0.98 0.005 255);
+  --sidebar-accent: oklch(0.55 0.22 330);
+  --sidebar-accent-foreground: oklch(0.98 0.005 255);
+  --sidebar-border: oklch(0.55 0.15 195 / 25%);
+  --sidebar-ring: oklch(0.55 0.15 195);
+}
+
+.dark {
+  --background: oklch(0.14 0.025 255);
+  --foreground: oklch(0.97 0.01 220);
+  --card: oklch(0.19 0.03 255);
+  --card-foreground: oklch(0.97 0.01 220);
+  --popover: oklch(0.19 0.03 255);
+  --popover-foreground: oklch(0.97 0.01 220);
+  --primary: oklch(0.78 0.16 195);
+  --primary-foreground: oklch(0.14 0.025 255);
+  --secondary: oklch(0.28 0.05 255);
+  --secondary-foreground: oklch(0.97 0.01 220);
+  --muted: oklch(0.24 0.03 255);
+  --muted-foreground: oklch(0.66 0.03 230);
+  --accent: oklch(0.7 0.25 330);
+  --accent-foreground: oklch(0.14 0.025 255);
+  --destructive: oklch(0.65 0.22 25);
+  --border: oklch(0.78 0.16 195 / 18%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.78 0.16 195);
+  --chart-1: oklch(0.78 0.16 195);
+  --chart-2: oklch(0.7 0.25 330);
+  --chart-3: oklch(0.82 0.16 90);
+  --chart-4: oklch(0.75 0.18 145);
+  --chart-5: oklch(0.68 0.2 290);
+  --warning: oklch(0.82 0.16 90);
+  --success: oklch(0.75 0.18 145);
+  --sidebar: oklch(0.17 0.03 255);
+  --sidebar-foreground: oklch(0.97 0.01 220);
+  --sidebar-primary: oklch(0.78 0.16 195);
+  --sidebar-primary-foreground: oklch(0.14 0.025 255);
+  --sidebar-accent: oklch(0.7 0.25 330);
+  --sidebar-accent-foreground: oklch(0.14 0.025 255);
+  --sidebar-border: oklch(0.78 0.16 195 / 18%);
+  --sidebar-ring: oklch(0.78 0.16 195);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+/*
+ * Textura de fondo tipo "broadcast graphics" (Requisito 16.1): una
+ * retícula sutil (scanline horizontal + grid vertical, ambas de muy baja
+ * opacidad) superpuesta sobre `--background`, más un ligero viñeteado
+ * radial que oscurece las esquinas. El objetivo es reforzar la sensación
+ * de HUD/gráficos de emisión de e-sports sin llegar a ser una textura
+ * ruidosa o distractiva: todos los `repeating-linear-gradient` usan alfa
+ * <= 4% y un paso de línea grande (48-64px).
+ *
+ * Se aplica en `body` (no en `:root`/`html`) para no interferir con el
+ * color de fondo base ya resuelto por `bg-background` en `@layer base`.
+ */
+body {
+  background-image:
+    radial-gradient(
+      ellipse 120% 90% at 50% -10%,
+      color-mix(in oklch, var(--primary), transparent 92%) 0%,
+      transparent 60%
+    ),
+    repeating-linear-gradient(
+      0deg,
+      color-mix(in oklch, var(--foreground), transparent 97%) 0px,
+      color-mix(in oklch, var(--foreground), transparent 97%) 1px,
+      transparent 1px,
+      transparent 48px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      color-mix(in oklch, var(--foreground), transparent 98%) 0px,
+      color-mix(in oklch, var(--foreground), transparent 98%) 1px,
+      transparent 1px,
+      transparent 64px
+    );
+  background-attachment: fixed;
+}
+
+/*
+ * Utilidades `.hud-glow-*` (Requisito 16 / meta de rediseño 1): sombras de
+ * resplandor neón reutilizables para elementos activos o destacados
+ * (tabs activos, valores clave, botones, marcador de sector activo en el
+ * Panel_Mapa). Se definen como `box-shadow` en capas (glow ajustado +
+ * glow amplio de menor opacidad) para un efecto de "neón" más creíble que
+ * una sombra única, y se ofrecen variantes `-sm`/`-lg` para ajustar la
+ * intensidad según el tamaño del elemento.
+ */
+@utility hud-glow-primary {
+  box-shadow:
+    0 0 0 1px color-mix(in oklch, var(--primary), transparent 40%),
+    0 0 10px 1px color-mix(in oklch, var(--primary), transparent 35%),
+    0 0 24px 4px color-mix(in oklch, var(--primary), transparent 65%);
+}
+
+@utility hud-glow-primary-sm {
+  box-shadow:
+    0 0 0 1px color-mix(in oklch, var(--primary), transparent 45%),
+    0 0 8px 0px color-mix(in oklch, var(--primary), transparent 45%);
+}
+
+@utility hud-glow-accent {
+  box-shadow:
+    0 0 0 1px color-mix(in oklch, var(--accent), transparent 40%),
+    0 0 10px 1px color-mix(in oklch, var(--accent), transparent 35%),
+    0 0 24px 4px color-mix(in oklch, var(--accent), transparent 65%);
+}
+
+@utility hud-glow-destructive {
+  box-shadow:
+    0 0 0 1px color-mix(in oklch, var(--destructive), transparent 40%),
+    0 0 10px 1px color-mix(in oklch, var(--destructive), transparent 35%),
+    0 0 20px 4px color-mix(in oklch, var(--destructive), transparent 65%);
+}
+
+/*
+ * Texto con resplandor (para hud-numbers destacados: velocidad, posición,
+ * combustible, etc.) vía `text-shadow` en vez de `box-shadow`, pensado
+ * para aplicarse junto a `.hud-number` sobre el color `currentColor`.
+ */
+@utility hud-text-glow {
+  text-shadow:
+    0 0 8px color-mix(in oklch, currentColor, transparent 45%),
+    0 0 20px color-mix(in oklch, currentColor, transparent 70%);
+}
+
+/*
+ * Escala de densidad para el "chrome" de los paneles del HUD (meta de
+ * rediseño 1): un único token `--hud-panel-gap` controla el espaciado
+ * entre bloques dentro de un panel, más denso que el `gap-4`/`gap-6`
+ * genérico usado originalmente, en línea con la densidad de información
+ * alta exigida por el Requisito 16.2.
+ */
+:root {
+  --hud-panel-gap: 0.625rem;
+}
+
+/*
+ * Utilidad `.hud-number` (Requisito 16.3): tipografía condensada tipo
+ * racing HUD para los valores numéricos de telemetría/clasificación
+ * (velocidad, RPM, tiempos de vuelta, posiciones, deltas, etc.).
+ *
+ * Fuente: "Chakra Petch" (vía next/font/google, ver app/layout.tsx), cargada
+ * como CSS variable `--font-hud`. Se elige Chakra Petch por su corte
+ * angular/condensado típico de interfaces de e-sports y por estar disponible
+ * en next/font/google (evita cargar una fuente externa en runtime; Next la
+ * empaqueta en build y genera métricas de fallback automáticamente).
+ * Fallback: si `--font-hud` no está disponible, se usa una pila de fuentes
+ * condensadas/monoespaciadas del sistema (`font-stretch: condensed` +
+ * `font-mono`) para no depender exclusivamente de la red en build.
+ */
+@utility hud-number {
+  font-family: var(--font-hud), ui-monospace, "SF Mono", "Cascadia Code",
+    "Consolas", monospace;
+  font-stretch: condensed;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+  font-style: normal;
+}

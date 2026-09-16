@@ -1,0 +1,22 @@
+{
+  "name": "@apex/iracing-bridge",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Bridge que lee datos reales de iRacing (via irsdk-node, memoria compartida de Windows) y los transmite por el mismo protocolo WebSocket que apps/generador-demo, como reemplazo drop-in.",
+  "main": "src/main.ts",
+  "scripts": {
+    "test": "vitest run --root ../.. iracing-bridge",
+    "start": "tsx src/main.ts",
+    "dev": "tsx watch src/main.ts"
+  },
+  "dependencies": {
+    "@apex/contrato-datos": "*",
+    "@apex/telemetry-core": "*",
+    "irsdk-node": "4.4.0",
+    "ws": "8.21.3"
+  },
+  "devDependencies": {
+    "@types/ws": "8.5.12",
+    "tsx": "^4.19.2"
+  }
+}

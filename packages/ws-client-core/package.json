@@ -1,0 +1,14 @@
+{
+  "name": "@apex/ws-client-core",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Cliente WebSocket con reconexion automatica y validacion contra el Contrato_Datos, compartido por apps/dashboard y apps/apex-mobile.",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "test": "vitest run --root ../.. ws-client-core"
+  },
+  "dependencies": {
+    "@apex/contrato-datos": "*"
+  }
+}
