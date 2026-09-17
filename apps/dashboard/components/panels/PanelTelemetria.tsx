@@ -184,6 +184,21 @@ function formatSectorTime(seconds: number | null): string {
 const NO_DELTA_LABEL = "sin diferencia calculable";
 
 /**
+ * Colores fijos por piloto en la Comparativa_Sectores: `--primary`
+ * (cian, el acento principal del tema) para el Piloto_Observado y
+ * `--chart-5` (violeta) para el Rival, para que ambas columnas de tiempo
+ * se distingan de un vistazo en vez de compartir el mismo color de texto
+ * neutro. No son colores de ESTADO (ver `statusVar`/`StatusLevel` en
+ * `@apex/telemetry-core`, usados para el Delta): son colores de
+ * IDENTIDAD, fijos independientemente de quién vaya más rápido, igual
+ * criterio que ya usan las trazas de throttle/brake (`--chart-1`/
+ * `--chart-2`) para distinguir dos series simultáneas en el mismo
+ * gráfico.
+ */
+const OBSERVED_COLOR = "var(--primary)";
+const RIVAL_COLOR = "var(--chart-5)";
+
+/**
  * Determina el color de acento del delta de un sector de la
  * Comparativa_Sectores usando `classifyDelta`/`statusVar` de
  * `@apex/telemetry-core` (mismo vocabulario ok/warning/critical/neutral
@@ -729,8 +744,16 @@ export default function PanelTelemetria() {
        * throttle/brake de más abajo.
        */}
       <div className="rounded-lg border border-border bg-card p-3">
-        <div className="hud-number mb-2 text-[11px] tracking-wide text-muted-foreground uppercase">
-          Comparativa de sectores
+        <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+          <div className="hud-number text-[11px] tracking-wide text-muted-foreground uppercase">
+            Comparativa de sectores
+          </div>
+          {sectorComparison !== null && (
+            <div className="hud-number flex items-center gap-4 text-[11px] tracking-wide text-muted-foreground uppercase">
+              <LegendSwatch color={OBSERVED_COLOR} label="Observado" />
+              <LegendSwatch color={RIVAL_COLOR} label="Rival" />
+            </div>
+          )}
         </div>
         {sectorComparison === null ? (
           <p className="text-xs text-muted-foreground">
@@ -745,10 +768,16 @@ export default function PanelTelemetria() {
                 <th className="hud-number py-1 text-left text-[11px] tracking-wider text-muted-foreground uppercase">
                   Sector
                 </th>
-                <th className="hud-number py-1 text-left text-[11px] tracking-wider text-muted-foreground uppercase">
+                <th
+                  className="hud-number py-1 text-left text-[11px] tracking-wider uppercase"
+                  style={{ color: OBSERVED_COLOR }}
+                >
                   Observado
                 </th>
-                <th className="hud-number py-1 text-left text-[11px] tracking-wider text-muted-foreground uppercase">
+                <th
+                  className="hud-number py-1 text-left text-[11px] tracking-wider uppercase"
+                  style={{ color: RIVAL_COLOR }}
+                >
                   Rival
                 </th>
                 <th className="hud-number py-1 text-left text-[11px] tracking-wider text-muted-foreground uppercase">
@@ -762,10 +791,10 @@ export default function PanelTelemetria() {
                   <td className="hud-number py-0.5 text-xs text-foreground">
                     S{sector.sectorIndex + 1}
                   </td>
-                  <td className="hud-number py-0.5 text-xs text-foreground">
+                  <td className="hud-number py-0.5 text-xs" style={{ color: OBSERVED_COLOR }}>
                     {formatSectorTime(sector.referenceTime)}
                   </td>
-                  <td className="hud-number py-0.5 text-xs text-foreground">
+                  <td className="hud-number py-0.5 text-xs" style={{ color: RIVAL_COLOR }}>
                     {formatSectorTime(sector.rivalTime)}
                   </td>
                   <td
